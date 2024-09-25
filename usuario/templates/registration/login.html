@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block titulo %} Inicio de sesion {% endblock titulo %}
+
+{% block contenido %}
+    {% if form.errors %}
+        <p>usuario o contraseña incorrectos</p>
+    {% else %}
+        <p>Llenar formulario para iniciar sesion</p>
+    {% endif %}
+        <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" name="next", value="{{ next}}">
+        <button type="submit">Iniciar sesion</button>
+    </form>
+{% endblock contenido %}

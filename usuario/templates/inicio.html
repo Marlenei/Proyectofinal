@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}INICIO{% endblock titulo%}
+{% block contenido %} 
+      <div class="wrap">
+        <div class="botonesinicio"> 
+          <a class="botoninicioindividual btn btn-outline-light" href="{% url 'login' %}" role="button">Iniciar sesion</a>
+          <a class="botoninicioindividual btn btn-outline-light" href="" role="button">Registrarse</a>
+        </div>
+      </div>
+{% endblock contenido %}
+
+
