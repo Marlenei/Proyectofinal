@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}LISTAS DE PUBICLACIONES {% endblock titulo%}
+{% block header %}  
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <a class="navbar-brand">BLOG</a>
+            {% if request.user.is_authenticated %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                <a class="nav-link active" aria-current="page" href="{% url 'post_templates' %}">Volver a inicio</a>
+                <a class="nav-link" href="{% url 'subir_post' %}">Subir posteo</a>
+                <form action="{% url 'logout' %}" method="post">
+                  {% csrf_token%}
+                 <button type="submit" class="btn link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover">Cerrar sesion</button>
+                </form>
+              </div>
+            </div>
+            {% else %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                <a class="nav-link active" aria-current="page" href="{% url 'inicio' %}">Inicia sesion</a>
+              </div>
+            </div>
+          </div>
+            {% endif %}
+        </nav>
+    </header>
+  {% endblock header %}
+
+{% block contenido %}
+
+    <div class="container">
+      <title> {{title}}</title>
+        <div class="row row-cols-1 row-cols-md-3 g-4" style="justify-content: space-evenly;">
+          {% for post_element in post_list %}
+            {% if request.user == post_element.autor %}
+              <div class="col">
+                    <div class="card h-100" style="border-radius: 25px;">
+                      <img class="imagenpost"  src="{{ post_element.imagen.url }}" >
+                        <div class="card-body">
+                          <a href="{% url 'post_detail' post_element.id%}" class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover">
+                            <h5 class="card-title">{{ post_element.titulo}}</h5>
+                          </a>
+                            <p class="card-text">{{ post_element.texto | slice:":60"}}</p>
+                            <p class="card-text">{{ post_element.autor}}</p>
+                            <a href="{% url 'delete_posts' post_element.id %}">Eliminar</a>
+                            <p class="card-footer"><small class="text-muted">{{ post_element.publicado.date}}</small></p>
+                        </div>
+                    </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+    </div>
+{% endblock contenido%}

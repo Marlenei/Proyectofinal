@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from .forms import LoginForm
+from .forms import LoginForm, UserRegistrationForm
 from django.template import loader
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from .models import Profile
 
 # Create your views here.
 def inicio(request):
@@ -34,4 +35,18 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'post_templates.html', {'post_templates':'post_templates'})
+    return render(request, 'post_templates.html')
+
+
+def register(request):
+    if request.method == 'POST':
+        user_form = UserRegistrationForm(request.POST)
+        if user_form.is_valid():
+            new_user = user_form.save(commit=False)
+            new_user.set_password(user_form.cleaned_data['password'])
+            new_user.save()
+            Profile.objects.create(user=new_user)
+            return render(request,'account/registro_done.html', {'new_user':new_user})
+    else:
+        user_form = UserRegistrationForm()
+    return render(request, 'account/registro.html', {'user_form':user_form})

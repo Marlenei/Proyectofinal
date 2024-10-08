@@ -2,10 +2,11 @@
 {% load static %}
 {% block titulo %}SUBIR POSTEO{% endblock titulo%}
 {% block contenido %} 
-<link rel="stylesheet" href="{% static 'styles.css' %}">
-<form action="" method="post">
+<div style="padding: 75px;">
+<form action="" method="POST"  enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">AGREGAR</button>
+    <button type="submit" class="btn btn-outline-light">Subir post</button>
 </form>
+</div>
 {% endblock contenido %}
